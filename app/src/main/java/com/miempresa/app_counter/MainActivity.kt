@@ -1,6 +1,7 @@
 package com.miempresa.app_counter
 
 
+import android.R
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,9 +10,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.miempresa.app_counter.ui.theme.App_counterTheme
@@ -62,7 +66,6 @@ class MainActivity : ComponentActivity() {
  * Este ejemplo demuestra el uso de estados con remember, Scaffold,
  * SnackbarHost, manejo de eventos en botones y actualización dinámica de UI.
  */
-
 
 
 @Preview(showBackground = true)
@@ -126,32 +129,92 @@ fun CounterScreen() {
 
 
                 }
-                Spacer(Modifier.height(25.dp))
 
-                Button(
-                    onClick = {
-                        counter++
-                        colorCounter = Color.Green
-                    }, modifier = Modifier.size(150.dp, 50.dp)
+                Spacer(modifier = Modifier.height(60.dp))
 
-                ) {
-                    Text("UP")
-                }
-                Spacer(Modifier.height(15.dp))
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Button(
+                        onClick = {
+                            counter++
+                            colorCounter = Color.Green
+                        }, modifier = Modifier
+                            .weight(1f)
+                            .size(100.dp, 50.dp)
 
-                Button(onClick = {
-
-                    if (counter > 0) {
-                        counter--
-                        colorCounter = Color.Red
-
-                    } else {
-                        scope.launch { banner.showSnackbar("Has llegado al límite inferior") }
+                    ) {
+                        Text("UP")
                     }
 
-                }, modifier = Modifier.size(150.dp, 50.dp)) {
-                    Text("DOWN")
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    Button(
+                        onClick = {
+                            counter = 0
+                            colorCounter = Color.Blue
+                        }, modifier = Modifier
+                            .weight(1f)
+                            .size(100.dp, 50.dp)
+                    ) {
+                        Text(
+                            text = "RESET",
+                            color = colorScheme.onError
+
+                        )
+                    }
+
+
+                    Spacer(modifier = Modifier.width(10.dp))
+
+
+                    Button(
+                        onClick = {
+
+                            if (counter > 0) {
+                                counter--
+                                colorCounter = Color.Red
+
+                            } else {
+                                scope.launch { banner.showSnackbar("Has llegado al límite inferior") }
+                            }
+
+                        }, modifier = Modifier
+                            .weight(1f)
+                            .size(100.dp, 50.dp)
+                    ) {
+                        Text("DOWN")
+                    }
                 }
+
+
+                Spacer(modifier = Modifier.height(30.dp))
+
+                Row(modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                    ) {
+
+                    //Mensaje dinámico
+
+                    val mensaje = when {
+
+                        counter == 0 -> "Empieza a contar"
+                        counter < 5 -> "Vamos a el por 5"
+                        counter < 10 -> "Siguimos sumando"
+                        counter < 15 -> "Da la vuelta"
+                        else -> "Tu puedes!!"
+                    }
+
+                    Text(
+                        text = mensaje,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.Magenta,
+
+
+                    )
+
+
+                }
+
+
             }
 
         }
