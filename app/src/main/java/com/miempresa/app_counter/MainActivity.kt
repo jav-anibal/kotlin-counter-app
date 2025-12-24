@@ -52,8 +52,6 @@ class MainActivity : ComponentActivity() {
 }
 
 /**
- *
- * Funcionalidades principales:
  * - Muestra un contador en pantalla dentro de una interfaz Material 3.
  * - Botón "UP": incrementa el contador y cambia el color del número a verde.
  * - Botón "DOWN": decrementa el contador y cambia el color del número a rojo.
