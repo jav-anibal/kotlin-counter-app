@@ -17,6 +17,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -24,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.miempresa.app_counter.ui.theme.App_counterTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,8 +58,14 @@ class MainActivity : ComponentActivity() {
 fun CounterScreen() {
     var counter by remember { mutableStateOf(0) }
     var colorCounter by remember { mutableStateOf(Color.Black) }
+    val banner = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+
 
     Scaffold(
+        snackbarHost = { SnackbarHost(banner) },
+
         topBar = {
             TopAppBar(
                 title = {
@@ -119,6 +129,11 @@ fun CounterScreen() {
                 Button(onClick = {
                     counter--
                     colorCounter = Color.Red
+
+                    if (counter < 0) {
+                        scope.launch { banner.showSnackbar("Has llegado al límite inferior") }
+                    }
+
                 }, modifier = Modifier.size(150.dp, 50.dp)) {
                     Text("DOWN")
                 }
