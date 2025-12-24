@@ -127,10 +127,10 @@ fun CounterScreen() {
                 Spacer(Modifier.height(15.dp))
 
                 Button(onClick = {
-                    counter--
-                    colorCounter = Color.Red
 
-                    if (counter < 0) {
+                    if (counter > 0) {
+                        counter--
+                        colorCounter = Color.Red
                         scope.launch { banner.showSnackbar("Has llegado al límite inferior") }
                     }
 
