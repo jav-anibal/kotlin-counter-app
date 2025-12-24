@@ -51,6 +51,21 @@ class MainActivity : ComponentActivity() {
 
 }
 
+/**
+ *
+ * Funcionalidades principales:
+ * - Muestra un contador en pantalla dentro de una interfaz Material 3.
+ * - Botón "UP": incrementa el contador y cambia el color del número a verde.
+ * - Botón "DOWN": decrementa el contador y cambia el color del número a rojo.
+ * - El contador nunca puede bajar de 0. Si el usuario intenta hacerlo,
+ *   aparece un Snackbar(banner) avisando: "Has llegado al límite inferior".
+ * - Incluye una TopAppBar con el título de la aplicación.
+ *
+ * Este ejemplo demuestra el uso de estados con remember, Scaffold,
+ * SnackbarHost, manejo de eventos en botones y actualización dinámica de UI.
+ */
+
+
 
 @Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -131,6 +146,8 @@ fun CounterScreen() {
                     if (counter > 0) {
                         counter--
                         colorCounter = Color.Red
+
+                    } else {
                         scope.launch { banner.showSnackbar("Has llegado al límite inferior") }
                     }
 
